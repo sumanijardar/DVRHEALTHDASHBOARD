@@ -52,6 +52,11 @@ export const API_ENDPOINTS = {
 
   // Analytics (analytics_api.php)
   FETCH_ANALYTICS: 'api/analytics_api.php?fetch_all=1',
+
+  // Authentication Endpoints (auth_api.php)
+  AUTH_LOGIN: 'api/auth_api.php?action=login',
+  AUTH_VERIFY: 'api/auth_api.php?action=verify',
+  AUTH_LOGOUT: 'api/auth_api.php?action=logout',
 };
 
 /**

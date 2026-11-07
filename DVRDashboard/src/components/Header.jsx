@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Menu,
   RefreshCw,
@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { exportSitesToCsv } from '../utils/excelExport';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 
 export default function Header({
   pageTitle = 'DVR Dashboard',
@@ -23,11 +24,13 @@ export default function Header({
   const [notifOpen, setNotifOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const { isDark, toggleTheme } = useTheme();
+  const { user } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     setUserMenuOpen(false);
-    alert('Logged out successfully.');
+    navigate('/logout');
   };
 
   const handleExport = () => {
@@ -234,7 +237,7 @@ export default function Header({
                     : 'bg-slate-200 text-slate-800 border border-slate-300/80'
                 }`}
               >
-                AD
+                {user?.username ? user.username.slice(0, 2).toUpperCase() : 'AD'}
               </div>
               <span
                 className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 rounded-full ${
@@ -265,16 +268,16 @@ export default function Header({
                 }`}
               >
                 <p className={`font-bold text-xs ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                  Admin Operator
+                  {user?.name || user?.username || 'Admin Operator'}
                 </p>
                 <p className={`text-[10px] font-mono ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                  admin@sarsoftware.com
+                  {user?.email || 'admin@sentinel.com'}
                 </p>
               </div>
               <button
                 type="button"
                 onClick={handleLogout}
-                className="w-full text-left px-3 py-2 hover:bg-rose-500/10 text-rose-500 rounded-lg flex items-center gap-2 font-semibold transition"
+                className="w-full text-left px-3 py-2 hover:bg-rose-500/10 text-rose-500 rounded-lg flex items-center gap-2 font-semibold transition cursor-pointer"
               >
                 <LogOut className="w-3.5 h-3.5" />
                 <span>Logout</span>
